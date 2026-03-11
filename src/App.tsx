@@ -575,6 +575,14 @@ const PerformanceDashboard = () => {
   const [isSyncing, setIsSyncing] = useState(false);
   const [activeTab, setActiveTab] = useState<'inflow' | 'conversion' | 'clicks'>('inflow');
   const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   
   const donutData = [
     { name: 'SNS 마케팅', value: 45, color: '#000000' },
@@ -703,8 +711,8 @@ const PerformanceDashboard = () => {
                     data={donutData}
                     cx="50%"
                     cy="50%"
-                    innerRadius={80}
-                    outerRadius={120}
+                    innerRadius={isMobile ? 60 : 80}
+                    outerRadius={isMobile ? 90 : 120}
                     paddingAngle={5}
                     dataKey="value"
                   >
